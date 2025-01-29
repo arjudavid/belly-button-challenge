@@ -1,30 +1,30 @@
 const url = "https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json";
 
-// Initialize the dashboard
+// Initializes the dashboard
 function init() {
   d3.json(url).then(data => {
     const names = data.names;
 
-    // Populate dropdown menu
+    // Populates dropdown menu
     const dropdown = d3.select("#selDataset");
     names.forEach(name => {
       dropdown.append("option").text(name).property("value", name);
     });
 
-    // Initialize charts and metadata with the first sample
+    // Initializes charts and metadata with the first sample
     const firstSample = names[0];
     updateCharts(firstSample);
     updateMetadata(firstSample);
   });
 }
 
-// Update charts when a new sample is selected
+// Updates charts when a new sample is selected
 function optionChanged(newSample) {
   updateCharts(newSample);
   updateMetadata(newSample);
 }
 
-// Update the bar and bubble charts
+// Updates the bar and bubble charts
 function updateCharts(sample) {
   d3.json(url).then(data => {
     const samples = data.samples;
@@ -67,23 +67,23 @@ function updateCharts(sample) {
   });
 }
 
-// Update demographic info
+// Updates demographic info
 function updateMetadata(sample) {
   d3.json(url).then(data => {
     const metadata = data.metadata;
     const selectedMetadata = metadata.find(m => m.id === parseInt(sample));
 
-    // Clear existing metadata
+    // Clears existing metadata
     const metadataPanel = d3.select("#sample-metadata");
     metadataPanel.html("");
 
-    // Add key-value pairs to the panel
+    // Adds key-value pairs to the panel
     Object.entries(selectedMetadata).forEach(([key, value]) => {
       metadataPanel.append("p").text(`${key}: ${value}`);
     });
   });
 }
 
-// Initialize the dashboard
+// Initializes the dashboard
 init();
 
